@@ -1,6 +1,7 @@
-package io.pixelinc
+package io.pixelinc.listeners
 
 import com.massivecraft.factions.{FPlayer, FPlayers}
+import io.pixelinc.BITPlugin
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.{EventHandler, Listener}
 
@@ -10,7 +11,7 @@ object ChatListener extends Listener {
     private val whitelistedWorlds = BITPlugin.getConfig.getStringList("enabled-worlds")
 
     @EventHandler
-    def onJoin(event: AsyncPlayerChatEvent): Unit = {
+    def onAsyncChat(event: AsyncPlayerChatEvent): Unit = {
         val worldName = event.getPlayer.getWorld.getName
         if (whitelistedWorlds.contains(worldName)) {
             val factionPlayer: FPlayer = FPlayers.getInstance().getByPlayer(event.getPlayer)
