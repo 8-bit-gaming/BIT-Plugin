@@ -3,14 +3,14 @@ package io.pixelinc.listeners
 import com.massivecraft.factions.{FPlayer, FPlayers}
 import io.pixelinc.BITPlugin
 import org.bukkit.event.player.AsyncPlayerChatEvent
-import org.bukkit.event.{EventHandler, Listener}
+import org.bukkit.event.{EventHandler, EventPriority, Listener}
 
 object ChatListener extends Listener {
 
     private val replaceString = "[FACTION]"
     private val whitelistedWorlds = BITPlugin.getConfig.getStringList("enabled-worlds")
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     def onAsyncChat(event: AsyncPlayerChatEvent): Unit = {
         val worldName = event.getPlayer.getWorld.getName
         if (whitelistedWorlds.contains(worldName)) {
@@ -28,7 +28,7 @@ object ChatListener extends Listener {
                 player.sendMessage(String.format(format, event.getPlayer.getDisplayName, event.getMessage))
             })
 
-            event.getRecipients.clear
+            event.getRecipients.clear()
             event.setFormat(s"${factionPlayer.getChatTag} $eventFormat")
         }
     }
