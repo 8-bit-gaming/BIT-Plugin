@@ -4,9 +4,10 @@ import java.io.File
 import java.util
 
 import com.massivecraft.factions.FactionsPlugin
-import io.pixelinc.commands.LeaderboardCommand
+import io.pixelinc.commands.{LeaderboardCommand, TestCommand}
 import io.pixelinc.commands.leaderboards.LeaderboardManager
 import io.pixelinc.listeners.ChatListener
+import io.pixelinc.tasks.TrailsTask
 import org.bukkit.configuration.file.YamlConfiguration
 import xyz.janboerman.scalaloader.plugin.ScalaPluginDescription.Command
 import xyz.janboerman.scalaloader.plugin.{ScalaPlugin, ScalaPluginDescription}
@@ -18,7 +19,8 @@ object BITPlugin
     extends ScalaPlugin(
         new ScalaPluginDescription("BIT", "1.0-SNAPSHOT")
         .description("The BIT Plugin")
-        .addCommand(new Command("leaderboard"))) {
+        .addCommand(new Command("leaderboard"))
+        .addCommand(new Command("test"))) {
 
     // TODO: Make a custom config manager to ease management of them.
     private val leaderboardsFile = new File(getDataFolder, "leaderboards.yml")
@@ -38,7 +40,12 @@ object BITPlugin
         LeaderboardManager.registerAll
         LeaderboardManager.loadActiveLeaderboards
 
+        getServer.getPluginManager.registerEvents(TestCommand, this)
+
         getCommand("leaderboard").setExecutor(LeaderboardCommand)
+        getCommand("test").setExecutor(TestCommand)
+
+        TrailsTask.runTaskTimerAsynchronously(BITPlugin, 0L, 1L)
     }
 
     def saveLeaderboardConfig: Unit = {
