@@ -21,15 +21,15 @@ object ChatListener extends Listener {
                 eventFormat = eventFormat.replace(replaceString, "")
 
             // This is done to show specific relation colours, ie, ally, enemy
-            event.getRecipients.forEach(player => {
-                val fPlayer = FPlayers.getInstance().getByPlayer(player)
-                val format = s"${factionPlayer.getChatTag(fPlayer)} $eventFormat"
+            event.getRecipients.forEach(target => {
+                val targetFaction = FPlayers.getInstance().getByPlayer(target)
+                val format = s"${factionPlayer.getChatTag(targetFaction)} $eventFormat".trim
 
-                player.sendMessage(String.format(format, event.getPlayer.getDisplayName, event.getMessage))
+                target.sendMessage(String.format(format, event.getPlayer.getDisplayName, event.getMessage))
             })
 
             event.getRecipients.clear()
-            event.setFormat(s"${factionPlayer.getChatTag} $eventFormat")
+            event.setFormat(s"${factionPlayer.getChatTag} $eventFormat".trim)
         }
     }
 
