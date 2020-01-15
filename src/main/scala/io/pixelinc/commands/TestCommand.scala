@@ -29,8 +29,8 @@ object TestCommand extends CommandExecutor with Listener {
 
     @EventHandler
     def onGrappleThrow(event: PlayerInteractEvent): Unit = {
-        if ((event.getAction == Action.RIGHT_CLICK_AIR || event.getAction == Action.RIGHT_CLICK_BLOCK) && event.getItem != null && event.getItem.getType == Material.STICK) {
-            if (event.getItem.hasItemMeta && (ChatColor.translateAlternateColorCodes('&', event.getItem.getItemMeta.getDisplayName) == "&cGRAPPLE")) {
+        if ((event.getAction == Action.RIGHT_CLICK_AIR || event.getAction == Action.RIGHT_CLICK_BLOCK) && event.getItem != null && event.getItem.getType == Material.ARROW) {
+            if (event.getItem.hasItemMeta && event.getItem.getItemMeta.getDisplayName == (ChatColor.RED + "GRAPPLE")) {
                 val player: Player = event.getPlayer
                 if (player.hasPermission("bit.grapple")) {
                     val timeLeft = System.currentTimeMillis - cooldown.getOrElse(player.getUniqueId.toString, 0L)
